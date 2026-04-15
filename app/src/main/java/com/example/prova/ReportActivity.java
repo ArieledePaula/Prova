@@ -1,6 +1,5 @@
 package com.example.prova;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -14,9 +13,10 @@ import java.util.List;
 public class ReportActivity extends AppCompatActivity {
 
     private TextView textViewReport;
+    private ProdutoDao produtoDao;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
@@ -30,20 +30,32 @@ public class ReportActivity extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        ProdutoDao produtoDao = db.produtoDao();
-        List<Produto> produtoList = produtoDao.getAllUsers();
+        produtoDao = db.produtoDao();
+
+        carregarRelatorio();
+    }
+
+    private void carregarRelatorio() {
+        List<Produto> produtoList = produtoDao.getAllProdutos();
 
         StringBuilder report = new StringBuilder();
 
-        for(Produto produto : produtoList){
-            report.append("Nome: ").append(produto.getNome()).append("\n")
-                    .append("Codigo: ").append(produto.getCodigo()).append("\n\n");
+        if (produtoList.isEmpty()) {
+            report.append("Nenhum produto cadastrado.");
+        } else {
+            for (Produto produto : produtoList) {
+                report.append("Nome: ").append(produto.getNome()).append("\n")
+                        .append("Código: ").append(produto.getCodigo()).append("\n")
+                        .append("Preço: ").append(produto.getPreco()).append("\n")
+                        .append("Estoque: ").append(produto.getQtdEstoque()).append("\n")
+                        .append("----------------------\n");
+            }
         }
 
         textViewReport.setText(report.toString());
     }
 
-    public void voltarParaCadastro(){
+    public void voltarParaCadastro() {
         Intent intent = new Intent(ReportActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

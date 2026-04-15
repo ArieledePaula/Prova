@@ -22,4 +22,6 @@ void insert (Produto produto);
 
 @Query("SELECT * FROM produto WHERE codigo = codigo LIMIT 1")
 Produto getProdutoByCodigo(int codigo);
+
+    void update(Produto produto);
 }
