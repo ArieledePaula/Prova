@@ -3,6 +3,7 @@ package com.example.prova;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,4 +39,22 @@ public class MainActivity extends AppCompatActivity {
 
         produtoDao = db.produtoDao();
     }
+
+
+     buttonSave.setOnClickListener(v -> {
+
+        String nome = editTextNome.getText().toString();
+        int codigo = Integer.parseInt(editTextCodigo.getText().toString());
+        int preco = Integer.parseInt(getEditTextPreco.getText().toString());
+        int qtdEstoque = Integer.parseInt(editTextQtdEstoque.getText().toString());
+
+
+        if (!nome.isEmpty() && !codigo.isEmpty() && !preco.isEmpty() && !qtdEstoque.isEmpty() ) {
+            Produto produto = new Produto(nome, codigo, preco, qtdEstoque);
+            ProdutoDao.insert(produto);
+            Toast.makeText(this, "Produto adicionado!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Preencha os campos obrigatórios!", Toast.LENGTH_SHORT).show();
+        }
+    });
 }
