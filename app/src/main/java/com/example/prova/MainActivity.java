@@ -80,5 +80,17 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
+    buttonDelete.setOnClickListener(v -> {
+
+        int codigo = Integer.parseInt(editTextCodigo.getText().toString());
+        Produto produto = produtoDao.getProdutoByCodigo(codigo);
+
+        if (produto != null) {
+            produtoDao.delete(produto);
+            Toast.makeText(this, "Produto deletado!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Produto não encontrado!", Toast.LENGTH_SHORT).show();
+        }
+    });
 
 }
