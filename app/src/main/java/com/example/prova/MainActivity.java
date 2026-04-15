@@ -1,5 +1,6 @@
 package com.example.prova;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -92,5 +93,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Produto não encontrado!", Toast.LENGTH_SHORT).show();
         }
     });
+
+
+        buttonReport.setOnClickListener(v ->
+    startActivity(new Intent(MainActivity.this, ReportActivity.class))
+            );
+}
 
 }
