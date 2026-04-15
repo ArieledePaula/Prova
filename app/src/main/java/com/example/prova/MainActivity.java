@@ -95,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
-        buttonReport.setOnClickListener(v ->
-    startActivity(new Intent(MainActivity.this, ReportActivity.class))
+    buttonReport.setOnClickListener(v ->
+    startActivity(new Intent(MainActivity.this, ReportActivity.class));
             );
-}
+
 
 }
