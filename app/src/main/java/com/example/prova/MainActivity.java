@@ -26,57 +26,72 @@ public class MainActivity extends AppCompatActivity {
 
         Button buttonSave = findViewById(R.id.buttonSave);
         Button buttonReport = findViewById(R.id.buttonReport);
-        Button buttonUpdate = findViewById(R.id.buttonUpdate);
         Button buttonDelete = findViewById(R.id.buttonDelete);
 
-        ProdutoDataBase db = Room.databaseBuilder(getApplicationContext(),
-                        ProdutoDataBase.class, "produto-database")
-                .allowMainThreadQueries()
-                .build();
-
+        ProdutoDataBase db = ProdutoDataBase.getInstance(this);
         produtoDao = db.produtoDao();
 
+
+
         buttonSave.setOnClickListener(v -> {
-            String nome = editTextNome.getText().toString();
-            String codigoStr = editTextCodigo.getText().toString();
-            String precoStr = editTextPreco.getText().toString();
-            String qtdStr = editTextQtdEstoque.getText().toString();
 
-            if (!nome.isEmpty() && !codigoStr.isEmpty() && !precoStr.isEmpty() && !qtdStr.isEmpty()) {
-                int codigo = Integer.parseInt(codigoStr);
-                int preco = Integer.parseInt(precoStr);
-                int qtdEstoque = Integer.parseInt(qtdStr);
+            String nome = editTextNome.getText().toString().trim();
+            String codigoStr = editTextCodigo.getText().toString().trim();
+            String precoStr = editTextPreco.getText().toString().trim();
+            String qtdStr = editTextQtdEstoque.getText().toString().trim();
 
-                Produto produto = new Produto(nome, codigo, preco, qtdEstoque);
-                produtoDao.insert(produto);
 
-                Toast.makeText(this, "Produto adicionado!", Toast.LENGTH_SHORT).show();
-            } else {
+            if (nome.isEmpty() || codigoStr.isEmpty() || precoStr.isEmpty() || qtdStr.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+                return;
             }
-        });
 
-        buttonUpdate.setOnClickListener(v -> {
-            String codigoStr = editTextCodigo.getText().toString();
 
-            if (!codigoStr.isEmpty()) {
-                int codigo = Integer.parseInt(codigoStr);
+            if (!precoStr.matches("^\\d+(\\.\\d{1,2})?$")) {
+                Toast.makeText(this, "Preço inválido! Use até 2 casas decimais.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                Produto produto = produtoDao.getProdutoByCodigo(codigo);
+            double preco = Double.parseDouble(precoStr);
+            if (preco <= 0) {
+                Toast.makeText(this, "Preço deve ser positivo!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                if (produto != null) {
-                    produto.setNome(editTextNome.getText().toString());
-                    produto.setPreco(Integer.parseInt(editTextPreco.getText().toString()));
-                    produto.setQtdEstoque(Integer.parseInt(editTextQtdEstoque.getText().toString()));
 
-                    produtoDao.update(produto);
-
-                    Toast.makeText(this, "Produto atualizado!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Produto não encontrado!", Toast.LENGTH_SHORT).show();
+            int qtdEstoque;
+            try {
+                qtdEstoque = Integer.parseInt(qtdStr);
+                if (qtdEstoque <= 0) {
+                    Toast.makeText(this, "Quantidade deve ser maior que zero!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Quantidade inválida!", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+
+            int codigo;
+            try {
+                codigo = Integer.parseInt(codigoStr);
+                if (codigo <= 0) {
+                    Toast.makeText(this, "Código deve ser positivo!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Código inválido!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
+            Produto produto = new Produto(nome, codigo, preco, qtdEstoque);
+            produtoDao.insert(produto);
+
+            Toast.makeText(this, "Produto cadastrado!", Toast.LENGTH_SHORT).show();
         });
+
+
 
         buttonDelete.setOnClickListener(v -> {
             String codigoStr = editTextCodigo.getText().toString();

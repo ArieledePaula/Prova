@@ -25,12 +25,9 @@ public class ReportActivity extends AppCompatActivity {
 
         btnVoltar.setOnClickListener(v -> voltarParaCadastro());
 
-        ProdutoDataBase db = Room.databaseBuilder(getApplicationContext(),
-                        ProdutoDataBase.class, "produto-database")
-                .allowMainThreadQueries()
-                .build();
-
+        ProdutoDataBase db = ProdutoDataBase.getInstance(this);
         produtoDao = db.produtoDao();
+
 
         carregarRelatorio();
     }

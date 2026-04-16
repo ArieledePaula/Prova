@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -20,8 +21,6 @@ void insert (Produto produto);
 @Delete
     void  delete(Produto produto);
 
-@Query("SELECT * FROM produto WHERE codigo = codigo LIMIT 1")
-Produto getProdutoByCodigo(int codigo);
-
-    void update(Produto produto);
+    @Query("SELECT * FROM produto WHERE codigo = :codigo LIMIT 1")
+    Produto getProdutoByCodigo(int codigo);
 }

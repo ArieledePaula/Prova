@@ -11,10 +11,10 @@ public class Produto {
 
     private String nome;
     private int codigo;
-    private int preco;
+    private double preco;;
     private int qtdEstoque;
 
-    public Produto(String nome, int codigo, int preco, int qtdEstoque) {
+    public Produto(String nome, int codigo, double preco, int qtdEstoque) {
         this.nome = nome;
         this.codigo = codigo;
         this.preco = preco;
@@ -29,7 +29,7 @@ public class Produto {
 
     public int getCodigo() {return codigo;}
 
-    public int getPreco() {return preco;}
+    public double getPreco() {return preco;}
 
     public int getQtdEstoque() {return qtdEstoque;}
 
@@ -37,9 +37,9 @@ public class Produto {
 
     public void setNome(String nome) {this.nome = nome;}
 
-    public void  setCodigo(int nome) {this.codigo = codigo;}
+    public void setCodigo(int codigo) {this.codigo = codigo;}
 
-    public void setPreco(int preco) {this.preco = preco;}
+    public void setPreco(double preco) {this.preco = preco;}
 
     public void setQtdEstoque(int qtdEstoque) {this.qtdEstoque = qtdEstoque;}
 
